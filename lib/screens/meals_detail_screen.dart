@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/meals.dart';
 
 class MealsDetailScreen extends StatelessWidget {
-  const MealsDetailScreen({super.key, required this.meal});
+  const MealsDetailScreen({
+    super.key,
+    required this.meal,
+    required this.onToggleFavorite,
+  });
 
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(meal.title)),
+      appBar: AppBar(
+        title: Text(meal.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFavorite(meal);
+            },
+            icon: Icon(Icons.star),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -24,10 +39,10 @@ class MealsDetailScreen extends StatelessWidget {
               'Ingredients',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 14,),
+            SizedBox(height: 14),
             for (final ingredient in meal.ingredients)
               Text(
                 ingredient,
@@ -35,18 +50,21 @@ class MealsDetailScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
-              SizedBox(height: 14),
+            SizedBox(height: 14),
             Text(
               'Steps',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 14,),
+            SizedBox(height: 14),
             for (final step in meal.steps)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 16,
+                ),
                 child: Text(
                   step,
                   textAlign: TextAlign.center,
