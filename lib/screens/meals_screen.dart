@@ -8,20 +8,17 @@ class MealsScreen extends StatelessWidget {
     super.key,
     this.title,
     required this.meals,
-    required this.onToggleFavorite,
   });
 
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
 
-  void selctMeal(BuildContext context, Meal meal) {
+  void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder:
             (ctx) => MealsDetailScreen(
               meal: meal,
-              onToggleFavorite: onToggleFavorite,
             ),
       ),
     );
@@ -32,6 +29,7 @@ class MealsScreen extends StatelessWidget {
     Widget content = ListView.builder(
       itemBuilder: (ctx, index) {
         Text(meals[index].title);
+        return null;
       },
     );
     if (meals.isEmpty) {
@@ -40,16 +38,16 @@ class MealsScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Uj oh ... nothing here!',
+              'Uh oh ... nothing here!',
               style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             SizedBox(height: 16),
             Text(
               'Try selecting a different category!',
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],
@@ -62,7 +60,7 @@ class MealsScreen extends StatelessWidget {
         itemBuilder:
             (ctx, index) => MealItem(
               meal: meals[index],
-              onSelectMeal: (meal) => selctMeal(context, meal),
+              onSelectMeal: (meal) => selectMeal(context, meal),
             ),
       );
     }

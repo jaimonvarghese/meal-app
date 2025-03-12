@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meals.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 
-class MealsDetailScreen extends StatelessWidget {
-  const MealsDetailScreen({
-    super.key,
-    required this.meal,
-    required this.onToggleFavorite,
-  });
+class MealsDetailScreen extends ConsumerWidget {
+  const MealsDetailScreen({super.key, required this.meal});
 
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final isFavorite = favoriteMeals.contains(meal);
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFavorite(meal);
+              final wasAdded = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavoriteStatus(meal);
+              ScaffoldMessenger.of(context).clearMaterialBanners();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    wasAdded ? 'Meal added as favorite' : 'Meal removed from favorites.',
+                  ),
+                ),
+              );
             },
-            icon: Icon(Icons.star),
+            icon: Icon(isFavorite ? Icons.star : Icons.star_border),
           ),
         ],
       ),
@@ -47,7 +56,7 @@ class MealsDetailScreen extends StatelessWidget {
               Text(
                 ingredient,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             SizedBox(height: 14),
@@ -69,7 +78,7 @@ class MealsDetailScreen extends StatelessWidget {
                   step,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),

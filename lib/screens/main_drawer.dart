@@ -45,7 +45,7 @@ class MainDrawer extends StatelessWidget {
             icon: Icon(
               Icons.restaurant,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             title: "Meals",  onTap: () { 
               onSelectScreen('meals');
@@ -55,7 +55,7 @@ class MainDrawer extends StatelessWidget {
             icon: Icon(
               Icons.settings,
               size: 26,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
             title: "Filters", onTap: () { 
               onSelectScreen('filters');
